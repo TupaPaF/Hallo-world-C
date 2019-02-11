@@ -1,0 +1,520 @@
+             strlen()函数 和 sizeof() 函数的使用 
+			  strlen()使用时 注意头文件<string.h>的添加
+/*
+#include <stdio.h>
+#include <string.h>
+#define PRAISE "You are an extraordinary being."
+
+int main(int argc, char *argv[]) 
+{
+char name[40];
+	printf("What's your name ?\n");
+	scanf("%s",name);
+	printf("Hello, %s.%s\n",name,PRAISE);
+	printf("Your name of %lu letters occupied %lu memory cells.\n",strlen(name),sizeof(name));
+	printf("The phrase of praise has %lu letters",strlen(PRAISE));
+	printf("and occupies %lu memory cells .\n",sizeof(PRAISE));
+*/
+*/						 4.3 常量和C预处理器  
+       
+		*/					#define
+	1. 使用常量名比使用数字更好
+			eg. pi(兀) and 3.1415926
+	2. C预处理器的使用 ：
+		（1）无参数宏定义：
+		 ·#define （常量名一般大写） 数值 
+			#define NAME value 
+		（2）有参数宏定义：
+		 ·#define 标识符（参数表） 字符序列
+			#define add(a,d) a+d
+/*
+#include <stdio.h>
+#define add(a,d) a+d								 |	#define add(a,d) (a+d)
+main()												 |
+{													 |
+	printf("%d\n",5*add(3,4));		计算过程 ： 5*3+4	 |		而非5*（3+4）
+	getch();						输出结果 ： 19 	 |
+}
+*/    3. #define 指令还可以定义‘字符’和“字符串”常量。
+			eg. #define BEEP '\a'
+				#define TEE 'T'
+				#define NYHD "Now you have done it !"
+	4. 常见错误 ： #define NUM =20
+			(此定义为 NUM代表 =20，而不是 20 
+			A = B + NUM ：A=B+=20 ）
+         */						#include "   "
+	1. #include<stdio.h> : 将名为stdio.h 的文件内容复制到#include所在位置。
+	2. 常用头文件 ：1⃣️ 输入输出函数<stdio.h> 2⃣️ 字符串函数<string.h>
+			      3⃣️ 数学函数<math.h>	  4⃣️ 动态内存分配函数<malloc>or<stdlib.h>
+				  5⃣️ 字符函数<ctype.h>	  6⃣️ 绘图函数<graphics.h>
+
+
+			
+		*/		   4.3.1 const限定符 
+const int MONTHS=12;//MONTHS的值为12，在程序中不可修改。
+		*/           4.3.2 明示常量
+ C头文件 limits.h 和 float.h 分别提供了整数类型和浮点类型 大小限制相关的信息；
+limits.h中 ：
+			#define INT_MAX +32767 （系统不同
+			#define INT_MIN -32768   数字存在差异）
+	Eg. 
+//printf("Maximum int value on this system = %d	  \n",INT_MAX);
+具体明示常量 见c prime P191 。
+/*
+#include <stdio.h>
+#include <limits.h>		// 整形限制
+#include <float.h>		//浮点型限制
+int main ()
+{
+	printf("Some number limits for this system ;\n");
+	printf("Biggest int : %d \n",INT_MAX);
+	printf("Smallest long long : %lld\n",LLONG_MIN);
+	printf("One byte= %d bits on this system .\n",CHAR_BIT);
+	printf("Largest double :%e\n",DBL_MAX);
+	printf("Smallest normal float : %e \n",FLT_MIN);
+	printf("float precision = %d digits \n",FLT_DIG);
+	printf("float epsilon= %e\n",FLT_EPSILON);
+	return 0;
+}
+*/
+			 printf注意事项 
+	各式字符串 与 待打印项要一一对应	，可多 不可少。
+	printf 的待打印项可以是一个字符常量 也可以是变量 还可以是表达式 ！
+//printf（“%c %d ”， ‘&’， 2*cost）；		
+用 printf()表示sizeof()表达式，系统不同可能使用%u，%lu，%llu。
+printf()中的标记 ： 字段宽度(int型)
+/*
+#include <stdio.h>
+#define PAGES 959
+int main()
+{
+	printf("*%d*\n",PAGES);
+	printf("*%2d*\n",PAGES);//设置2字符宽度，因待打印字符有3个字符宽度，所以自动扩大字符长度。
+	printf("*%10d*",PAGES);			
+	printf("*%-10d*",PAGES);
+	return 0;
+}
+*/
+		字段宽度（浮点型修饰符）
+/*
+#include <stdio.h>
+int main()
+{
+	const double RENT = 3852.99;//const变量(限定为只读)
+	printf("*%f*\n",RENT);			//1*3852.110000*
+	printf("*%e*\n",RENT);			//2*3.852110e+03*
+	printf("*%4.2f*\n",RENT);		//3*3852.11*
+	printf("*%3.1f*\n",RENT);		//4*3852.1*
+	printf("*%10.3f*\n",RENT);		//5*  3852.110*
+	printf("*%10.3E*\n",RENT);		//6* 3.852E+03*
+	printf("*%+4.2f*\n",RENT);		//7*+3852.11*
+	printf("*%010.2f*\n",RENT);		//8*0003852.11* 以0填充字段
+	return 0;
+}
+*/
+ 字符串打印的长度控制 
+/*
+#include <stdio.h>
+int main()
+{
+	printf("[%2s]",BLURB);		//[Authrntic imitation]
+	printf("\n");				//自动扩大长度
+	printf("\n");
+	printf("[%24s]",BLURB);		//[     Authrntic imitation]
+	printf("\n");				//显示24个字符长度，多余由空格填
+	printf("\n");
+	printf("[%24.5s]",BLURB);	//[                   Authr]
+	printf("\n");				//显示24个字符长度，.5打印前五个字符
+	printf("\n");
+	printf("[%-24.5s]",BLURB);	//[Authr                   ]
+	return 0;					//显示24个字符长度，.5打印前五个字符，‘-’ 表示左对齐。
+
+}
+*/
+ 					  转换说明 
+1. 打印值与转换类型相匹配 
+ 	int ———%d	%x	%o
+	float/double ———— %f %e %g
+			
+			下程序结果有关二进制补码 ！！！！！（不清楚）
+/*
+#include <stdio.h>
+#define PAGES 336
+#define WORDS 65618
+
+int main()
+{
+	short num = PAGES;
+	short mnum = -PAGES;
+	printf("num as short and unsigned short : %hd %hu \n",num,num);		//336 336 
+	printf("-num as short and unsigned short : %hd %hu \n",mnum,mnum);		//-336 65200
+	printf("num as  int and char :%d %c \n",num,num);		//336 P
+	printf(" WORDS as int,short,and char : %d %hd %c \n",WORDS,WORDS,WORDS);//65618 82 R 
+	return 0;
+}
+*/
+不匹配的浮点型转换 
+/*
+#include <stdio.h>
+int main()
+{
+	float n1 = 3.0;
+	double n2 = 3.0;
+	long n3 = 2000000000;
+	long n4 = 1234567890;
+	printf("%.1e %.1e %.1e %.1e \n",n1,n2,n3,n4);  // 3.0e+00 3.0e+00 0.0e+00 0.0e+00
+	
+	printf("%ld %ld \n",n3,n4);						//2000000000 1234567890 
+	
+	printf("%ld %ld %ld %ld \n",n1,n2,n3,n4);		//2000000000 1234567890 *********-6551253762584674111 140735761883000*******	转换方式对应正确结果依然出错。
+	return 0;
+}
+*/
+*/							  参数传递  
+1. 栈的概念 ： 一段内存区域。
+		函数根据对应类型将变量的值传入‘栈’中，（所占用空间由变量类型决定）printf根据对应的转换类型将栈中的数据对应输出。
+		在上例 printf("%ld %ld %ld %ld \n",n1,n2,n3,n4); 中，%ld对应读取4字节，而float n1 在存入栈时，被自动转换为double类型 占8字节，因此打印时第一个%ld只打印n1 的前4字节，而第二个%ld 接着打印了n1的后4字节，以此类推，所以，虽然用对了转换类型，但打印出的n1n2n3n4 均不是期望的值。&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+2. float类型传递时作为double类型传递。
+				
+				
+*/						 printf函数的返回值   
+1.printf的返回值为：所打印字符数的个数。 若输出有误，则返回一个负值。
+/*
+#include <stdio.h>
+int main()
+{
+	int bph2o = 212 ;
+	int rv;
+	rv = printf("%d F is water's boiling point.\n",bph2o);	//rv=printf所打印字符个数。
+	printf("The printf() function printed %d characters .\n",rv);//该数字包含空格和看不见的换行符。
+	return 0;
+}
+*/			
+*/						 scanf的使用
+scanf的返回值为： 执行这个函数后成功获得的数据个数。若输出有误，则返回值为：0.
+1.scanf（）读取基本变量类型的值，在变量名前加 & ；
+2.scanf（）把字符串读入字符数组中，不使用 & ；
+3.scanf（）跳过所有空格，读取第一个非空格字符或符号；
+4.scanf（）重复读取保存，直到读取至第一个非对应类型字符停止，并将该字符放回输入。******因此，程序在下一次读数时，首先读取上次未读取的字符。
+/*
+#include <stdio.h>
+
+int main(int argc, char *argv[]) {
+	int a;
+	char b[5];
+	printf("The first time to read : \n");
+	scanf("%d",&a);
+	printf("The second time to read : \n");
+	scanf("%s",b);
+	printf("First input number :\n");//scanf 读取的时候遇到非对应格式字符会停止
+	printf("%d\n",a);
+	printf("The rest of input number : \n");	//停止后，下次读取的是上次遗留的输入值
+	printf("%s",b);
+} 
+*/                              
+	*/					printf() and scanf() 的*修饰符 
+一.printf()和scanf()可以使用*修饰符来修改转换说明的含义。
+1.  *在printf（）中的用法示例 ：
+/*
+#include <stdio.h>
+int main()
+{
+	unsigned width,precision;//width 字段宽度
+	int number = 256;		 //number 待打印数字
+	double weight = 242.5; 
+	printf("Enter a field width :\n");
+	scanf("%d",&width);
+	printf("The number is %*d : \n",width,number);// * 在 d 之前，so 在printf参数列表中，width在number的前面。
+	printf("Now enter a width and a precision : \n");
+	scanf("%d %d",&width,&precision);
+	printf("Weight = %*.*f \n",width,precision,weight);//（“”，字段宽度，小数位数，数字本身）
+	printf("Done !\n");
+	return 0;
+}
+*/
+2.  *在scanf（）中的用法示例 ：
+ **********”跳过功能“**********
+/*
+#include <stdio.h>
+int main()
+{
+	int n;
+	printf("Please enter three intrgers : \n");
+	scanf("%*d %*d %d",&n);//	跳过两个整数，把第三个整数copy给n。
+	printf("The last integers was %d \n",n);
+	return 0;
+}
+*/
+
+~~~~~~~~~~~#define定义数值常量
+～～～～～～~const定义只读变量 
+ 要在printf（）中输出“” ： 用斜杠加双引号 --- \"                    "
+ 要在printf（）中输出% ： 用百分号加百分号 ———— “%%”
+
+*/					While 循环 
+while (条件)
+{
+	循环体语句1；
+	步长；
+}
+语句2；
+
+			sizeof运算符和size_t类型 
+/*
+#include <stdio.h>
+int main(void)
+{
+	int n = 0;
+	size_t intsize;
+	intsize = sizeof(int);
+	printf("n = %d, n has %lu bytes; all ints have %lu bytes.\n",n,sizeof n, intsize);
+	return 0;
+}
+*/
+ size_t 是语言定义的标准类型。
+～～～～～～对现有类型创建别名 。
+/* typrdef double real ；*/( 即：将real作为double的别名，现在可以定义real类型：)
+/* real x；*/ (x为double类型变量)
+
+			取余运算符 ： % 
+把秒数转换成分和秒 ： 			
+/*
+#include <stdio.h>
+#define SEC_PER_MIN 60 
+int main(void)
+{
+	int sec , min , left ;
+	printf("Convert seconds to minutes and seconds ! \n");
+	printf("Enter the number of seconds (<=0 to quit):\n");
+	scanf("%d",&sec);
+	whlie (sec > 0)									//人为控制循环结束 ！
+	{
+		min = sec / SEC_PER_MIN;
+		left = sec % SEC_PER_MIN;
+		printf ("%d second is %d minutes , %d seconds.\n",sec,min,left);
+		printf ("Enter next value (<=0 to quit ):\n");
+		scanf("%d",&sec);
+	}
+	printf ("Done !\n");
+	return 0;
+	
+}
+*/
+						优先级	
+      1.	A=b/2 + 5*（1+b++）；程序运行时不会按照从左到右的顺讯计算，而是先计 
+	算5*（1+b++）： 因此b的值在此+1。计算b/2时便得不到预期的值。
+2.	n=3；
+		y=n++ + n++；
+	该例子n的结果可以肯定是+2的 ，但是y的值不能确定，因为编译器可以先使用		n=3两次 使得 y=6，n=5；也可以 先让n=3，再自增后与后面运算 使得 		y=7，n=5.
+因此要遵循以下规则：
+	1. 若一个变量出现在一个函数的多个参数中，不能对该变量使用递增或递减运		算符。
+	2.若一个变量多次出现在一个表达式中，不要对该变量使用递增或递减运算符。
+   					
+						表达式
+	1.每个表达式都有一个值。
+   						语句 
+	1.legs=4  —————表达式
+	  legs=4； —————语句
+	    ；    ——————空语句
+	2.语句可以改变或调用函数。
+eg：
+/*
+#include <stdio.h>
+int main()					/* work out the sum of 1 to 20 
+{
+	int count, sum;			//声明
+	count=0;				//表达式语句
+	sum=0;
+	while(count++ < 20)		//迭代语句
+	sum = sum + count;
+	printf("sum = %d\n",sum);
+	return 0;				//跳转语句
+	
+}
+*/	
+	1. ～副作用～  的概念 ：
+	表达式的主要目的是进行求值 ，因此例如 i = 10 ；表达式的目的是求出i的值为10 ， 而将10 赋值给i 就成为其副作用。printf（）函数，其作用是返回待打印字符的个数。显示出待打印字符就是其副作用。自增自减也同理，我们要使用的就是他的副作用。
+	2. ～序列点～  的概念 ：
+	序列点是程序执行的点，在该点上，所有副作用都在进入下一步之前发生。c语言中，语句中的分号标记了一个序列点。
+	任何一个完整的表达式（该表达式不是另一个更大的表达式的子表达式）也是一个序列点。
+						复合语句
+	用 {} 将多条语句括起来，视为一条符合语句 。
+/*
+1.
+	int i=0；
+	while (i ++ < 10 )
+	sum = 10 * i + 2 ;
+	printf("sum = %d ",sum);
+2.
+	int i=0；
+	while (i ++ < 10 )
+	{
+		sum = 10 * i + 2 ;
+		printf("sum = %d ",sum);			
+	}
+*/
+	1中printf是一条单独的语句，只执行一次；
+	2中printf为while的循环体是符合语句的一部分，运行多次。	
+	
+*/						类型转换
+一. 一般转换规则
+1. char / short ====》int；
+2. 涉及两种类型的运算，，两个值均转换成两个类型中最高级的类型。
+3. 类型的级别由高到低 ： long double,double,float,unsignedlonglong,long long,unsigned long,long,unsigned int,int.
+二. 待赋值的值与目标类型不匹配时 
+1. 目标类型是unsigned int 
+看不懂 ， 听视频课 ！！！！！！！！！！！！！！！！
+
+			
+*/				5.6	带参数的函数
+*/PS: 定义自己的函数：
+/*	#include <stdio.h>
+	void butler(void);
+	int main()		
+	{
+		printf("I will summon the butler function.\n");
+		butler();
+		printf("Yes.Bring me some tea and weiteable DVDs.\n");
+		return 0;
+	}
+	void butler(void)
+	{
+		printf("You rang, sir?\n");
+	}   		
+*/
+一. 定义一个待参数的函数：
+eg 5.15
+/*
+#include <stdio.h>
+void pound(int n);	//ANSI函数原型声明
+int main(void)
+{
+	int times = 5;
+	cahr ch='!'; 	//ASCI码是33
+	float f = 6.0f;
+	pound(times);	//int类型的参数
+	pound(ch);		//和pound((int)ch);相同
+	pound(f);		//和pound((int)f);相同
+	return 0;
+}		
+void pound(int n)	//ANSI风格函数头
+{					//表明该函数接受一个int类型的参数
+	while(n-- > 0)
+	printf("#");
+	printf("\n");
+}			
+*/
+1.void ： 若定义的函数不接收任何参数，在函数头的括号中加 void 。
+		若接受参数，在括号中加入xxx类型变量x的声明。			
+上例中：  void pound(int n)			
+	 		void pound(void)		
+2.形参和实参：
+形参是变量，实参是函数调用提供的值，实参被赋值给相应的形参。			
+上例中， times是pound（）的实参；
+		n是pound（）的形参；
+3.变量名是函数私有，在同一段代码中的不同函数里出现相同的变量名，其外形相同含义不同，且， 程序可区分他们。			
+4.函数原型（函数声明）：描述函数的返回值和参数类型
+上例中 ：		void pound(int n);	
+		1⃣️：该函数没有返回值（函数名前的void关键字）
+		2⃣️：该函数有一个int类型参数
+因此在后续函数中出现pound（ch）时，ch = ！，函数自动将ch转换成int类型，i的Ascii值为33 即：ch = 33 。
+/* 程序清单 5.16
+#include <stdio.h>
+const int S_PER_M = 60;			//1分钟的秒数
+const int S_PER_H = 3600;		//1小时的秒数
+const double M_PER_K = 0.62137;//1公里的英里数
+int main(void)
+{
+	double distk,distm;			//跑过的距离（分别以公里和英里为单位）
+	double rate;				//平均速度（以英里/小时为单位）
+	int min,sec;				//跑步用时(	以分钟和秒为单位)
+	int time;					//跑步用时（以秒为单位）
+	double mtime;				//跑一英里需要的时间，秒为单位
+	int mmin,msec;				//跑一英里需要的时间，分钟和秒为单位
+	printf("This program convers your time for a metric race \n")
+	printf("to a time for running a mile and to your average \n");
+	printf("speed in miles per hour.\n");
+	printf("Please enter , in kilometers, the distance run.\n");
+	scanf("%lf",&distk);		//%lf表示读取一个double类型的值
+	printf("Next enter the time in minutes and seconds.\n");
+	printf("Begin by entering the minutes.\n");
+	scanf("%d",&min);
+	printf("Now enter the seconds.\n");
+	scanf("%d",&sec);
+	time = S_PER_M * min + sec;
+	distm = M_PER_K * distk;
+	rate = distm/time * S_PER_H ;
+	mtime = (double)time/distm ;
+	mmin = (int)mtime / S_PER_M ;
+	msec = (int)mtime % S_PER_M ;
+	printf("You ran %1.2f km (%1.2f miles) in %d min, %d sec.\n",distk,distm,min,sec);
+	printf("That pace corresponds to running a mile in %d min,",mmin) ;
+	printf("%d sec.\n Your average speed was %1.2fmph.\n",msec,rate);
+	return 0;
+	
+}			
+*/
+*/							第六章   循环		
+		*/					while 循环再探	
+一.示例程序 ：
+/* 程序  6.1
+#include<stdio.h>
+int main(void)
+{
+	long num;
+	long sum = 0L;
+	int status;
+	printf("Please enter an integer tobe summed : ");
+	printf("(Q to quit):")	;
+	status = scanf("%ld",&num);
+	while(status == 1 )
+	{
+		sum = sum + num;
+		printf("Please enter next integer (q to quit): ");
+		status = scanf("%ld", & num);
+	}
+	printf("Those integers sum to %ld .\n",sum);
+	return 0;
+}*/
+1.	scanf()读取整数返回值为1，读取非数字返回值为0；
+2.	
+	利用scanf（）的双重特性避免了在循环中交互输入时的棘手问题。
+例如，假设scanf没有返回值，那么每次循环只会改变num的值。虽然可以使用num的值来结束循环，（num > 0   or num !=0) 作为循环条件，但这样用户输入时 就不能输入某些值。如-3，0。 也可以在程序中加入循环代码，例如每次循环询问用户“是否继续循环？” ， 但这种方法笨拙 又会减慢速度 。
+			
+二.伪代码
+	用简单的句子表示程序思路，与c语言形式相对应。
+	伪代码有助于专心于设计程序的逻辑，确认逻辑之后再进行c语言代码的翻译。		
+三.用伪代码表示while循环的标准格式 ：
+		获得一个用于测试的值
+		当测试为真时
+		处理值
+		获取下一个值
+四.用关系运算符和表达式比较大小
+	1.while(number < 6）
+	2.while(ch != '$')
+	3.while(scanf("%d",&num) == 1)
+	4.关系表达式可以用于比较字符（ASCII）
+	  但关系运算符不能用于比较字符串。
+	5.比较浮点数时，尽量只用 <,> .因为浮点数的舍入误差会导致在逻辑上应该相等的两数不相等。
+Eg. 浮点数比较：
+#include "math.h"
+#include "stdio.h"
+int main()
+{
+	const double ANSWER = 3.14159;
+	double response;
+	printf("What is the value of pi ?\n");
+	scanf("%lf",&response);
+	while (fabs(response - ANSWER) > 0.0001)//fabs(__x)求绝对值函数
+	{
+		printf("Try again ! \n");
+		scanf ("%lf",&response);
+	}	
+	printf("Close enough !\n");
+	return 0;
+}
+*/二维数组
+概念：
+	本质是一位数组，其元素是一个一位数组。
+*/指针和数组
+    数组名是数组首元素的地址： Shuzu = &Shuzu[0];

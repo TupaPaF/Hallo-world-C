@@ -1,0 +1,144 @@
+		编程练习 5.11
+1.
+#include <stdio.h>
+#define MIN 60
+int main(void)
+{
+	int min,hour,rest;
+	printf("Please enter the minutes :\n");
+	scanf("%d",&min);
+	while (min > 0)
+	{
+		hour = min / MIN;
+		rest = min % MIN;
+		printf("Your minutes is %d hours %d minutes !\n",hour,rest);
+		printf("Please enter the minutes :\n");
+		scanf("%d",&min);
+	}
+	printf(" QUIT !");
+	return 0;
+}
+
+
+2.
+#include <stdio.h>
+int main()
+{
+	int num,plus;
+	plus = 0;
+	printf("please enter a number : \n");
+	scanf("%d",&num);
+	while (plus < 11)
+	{
+		printf("%d \t",num);
+		plus += 1;
+		num += 1;
+	}
+	return 0;
+}
+
+3.
+#include <stdio.h>
+int main()
+{
+	const int WEEK = 7;
+	int day,week,rest;
+	printf("please enter a number of days :\n");
+	scanf("%d",&day);
+	while (day > 0) 
+	{
+		week = day / WEEK;
+		rest = day % WEEK;
+		printf("%d days are %d weeks, %d days.\n\n",day,week,rest);
+		printf("please enter a number of days :\n");
+		scanf("%d",&day);
+	}
+	printf("QUIT!");
+	return 0;
+}
+
+4.
+5.
+#include <stdio.h>
+int main()
+{
+	int count,sum,day;
+	count = 0 ;
+	sum = 0 ;
+	printf("please enter the days u earn : \n");
+	scanf("%d",&day);
+	while (count ++ < day )
+		sum = sum + count;
+	printf("sum = %d \n",sum);
+	return 0;
+}
+
+6.
+7.
+#include <stdio.h>
+void lifang(double n);
+int main()
+{
+	double num;
+	double result;
+	printf("Please enter a number : \n");
+	scanf("%lf",&num);
+	lifang(num);
+	return 0;
+}
+void lifang(double n)
+{
+	printf("%lf",n*n*n);	
+}
+
+
+8.
+#include <stdio.h>
+int main()
+{
+	int F,S,R;
+	printf("This program computes moduli.\n");
+	printf("Please enter an integer to serve as the second operand : \n");
+	scanf("%d",&S);
+	printf("Please enter the first operand :\n");
+	scanf("%d",&F);
+	while (F > 0 )
+	{
+	
+		R = F % S;
+		printf("%d %% %d is %d \n",F,S,R);
+		printf("Please next enter the first operand :\n");
+		scanf("%d",&F);
+	}
+	printf("QIUT ~");
+	
+}
+
+9.
+#include "stdio.h"
+void Temperatures(double Hua);
+int main()
+{
+	double Hua,She,Kai,g;
+	printf("Please enter the Hua temperatures ! \n");
+	g=scanf("%lf",&Hua);
+	while (g == 1)
+	{
+		Temperatures(Hua);
+		printf("Please enter the other Hua temperatures ! \n");
+		g=scanf("%lf",&Hua);
+	}
+	printf("Quit !");
+	return 0;
+}
+void Temperatures(double Hua)
+{	
+	const double a=5.0;
+	const double b=9.0;
+	double  she,kai;
+	she = a / b * (Hua - 32.0);
+	kai = she + 273.16;
+	printf("She is %.2lf , Kai is %.2lf \n",she,kai);
+	
+}
+
